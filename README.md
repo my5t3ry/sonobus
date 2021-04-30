@@ -33,77 +33,55 @@ intercepted, please keep that in mind. All audio is sent directly between users 
 There are binary releases for macOS and Windows available at [sonobus.net](https://sonobus.net) or in the releases of this repository on GitHub.
 
 ## Linux
-For Linux there is a Snap installation available at [snapcraft.io/sonobus](https://snapcraft.io/sonobus) which should let you install it easily 
-on many different distributions. You can install it from the graphical snap-store, or using the following command line assuming snap is already installed:
 
-    sudo snap install sonobus
-
-Currently the Snap build supports JACK v1 (not v2), so you will want to make sure you have the jackd1 package installed instead of jackd2. For instance, on Ubuntu you would need to do an:
-
-    sudo apt install jackd1
-
-After installing you will want to connect sonobus with alsa and jack1 and alsa with the following commands:
-
-    sudo snap connect sonobus:jack1
-	sudo snap connect sonobus:alsa
-
-### Raspberry Pi
-
-You can either install the Snap of SonoBus on your existing Raspberry Pi distribution, or you can use the Jambox dedicated image which also includes other popular remote network jamming software, including SonoBus. Check it out at [github.com/kdoren/jambox-pi-gen](https://github.com/kdoren/jambox-pi-gen), and grab the latest release image.
+There are packages available for Debian-based Linux distributions as well as a Snap package. See installation instructions at [sonobus.net/linux.html](https://sonobus.net/linux.html).
 
 Or if you prefer, you can build it yourself following the [build instructions](#on-linux) below.
 
 # Building
 
-The original GitHub repository for this project is at [github.com/essej/sonobus](https://github.com/essej/sonobus).
+The original GitHub repository for this project is at
+[github.com/sonosaurus/sonobus](https://github.com/sonosaurus/sonobus).
 
 To build from source on macOS and Windows, all of the dependencies are a part of this GIT repository, including prebuilt Opus libraries. 
+The build now uses [CMake](https://cmake.org) 3.15 or above on macOS, Windows, and Linux platforms, see
+details below.
 
 ### On macOS
 
-Open the Xcode project at `Builds/MacOSX/SonoBus.xcodeproj`, choose the target you want to build and go for it.
+Make sure you have [CMake](https://cmake.org) >= 3.15 and XCode. Then run:
+```
+./setupcmake.sh
+./buildcmake.sh
+``` 
+The resulting application and plugins will end up under `build/SonoBus_artefacts/Release`
+when the build completes. If you would rather have an Xcode project to look
+at, use `./setupcmakexcode.sh` instead and use the Xcode project that gets
+produced at `buildXcode/SonoBus.xcodeproj`.
 
 ### On Windows
 
-Using Visual Studio 2017, open the solution at `Builds\VisualStudio2017\SonoBus.sln`, choose the target you want to build and go for it.
+You will need [CMake](https://cmake.org) >= 3.15, and  Visual Studio 2017
+installed. You'll also need Cygwin installed if you want to use the scripts
+below, but you can also use CMake in other ways if you prefer.
+
+```
+./setupcmakewin.sh
+./buildcmake.sh
+``` 
+The resulting application and plugins will end up under `build/SonoBus_artefacts/Release`
+when the build completes. The MSVC project/solution can be found in
+build/SonoBus_artefacts as well after the cmake setup step.
+
 
 ### On Linux
 
-The first thing to do in a terminal is go to the Linux build directory:
+The first thing to do in a terminal is go to the Linux directory:
 
-    cd Builds/LinuxMakefile
+    cd linux
 
-
-Make sure you have `libopus` and the `libopus` development package
-(libopus-dev), as well as JACK (jackd) and its development package. Also
-libasound2-dev , libx11-dev, libxext-dev, libxinerama-dev, libxrandr-dev,
-libxcursor-dev, libgl-dev, libfreetype6-dev,
-libcurl4-openssl-dev.
-
-Other distributions may have slightly different package names for these, for
-instance in Debian, you might substitute libcurl4-gnutls-dev.
-
-If you are using Ubuntu, you can run the following script to install all the
-prerequisites (scripts for other distributions wanted, please contribute them
-if you can):
-
-    ./ubuntu_get_prereqs.sh
-
-There are other scripts for some other distributions.
-After they are installed, build SonoBus with the following command, both the
-standalone application and the VST3 plugin will be built:
-
-    ./build.sh
-
-When it finishes, the executable will be at `Builds/LinuxMakefile/build/SonoBus`. You can install it using the installation script.
-
-    sudo ./install.sh
-
-It defaults to installing in /usr/local, but if you want to install it
-elsewhere, just specify it as the first argument on the commandline of the script.
-If you wish to uninstall you can run the uninstall script in the same directory.
-
-    sudo ./uninstall.sh
+And read the [BUILDING.md](linux/BUILDING.md) file for
+further instructions.
 
 
 # License and 3rd Party Software
